@@ -1,0 +1,14 @@
+package com.ercoding.chirp.user.infra.database.security
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+
+class PasswordEncoder {
+
+    private val bcrypt = BCryptPasswordEncoder()
+
+    fun encode(rawPassword: String): String? = bcrypt.encode(rawPassword)
+
+    fun matches(rawPassword: String, hashedPassword: String): Boolean {
+        return bcrypt.matches(rawPassword, hashedPassword)
+    }
+}

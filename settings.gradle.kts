@@ -1,14 +1,21 @@
-import org.gradle.kotlin.dsl.maven
-import org.gradle.kotlin.dsl.mavenCentral
-import org.gradle.kotlin.dsl.repositories
-
 pluginManagement {
     includeBuild("build-logic")
     repositories {
+        gradlePluginPortal()
         mavenCentral()
-        maven { url = uri("https://repo.spring.io/milestone" )}
+        maven { url = uri("https://repo.spring.io/milestone") }
     }
 }
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url = uri("https://repo.spring.io/milestone" )}
+        gradlePluginPortal()
+    }
+}
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "chirp"
 

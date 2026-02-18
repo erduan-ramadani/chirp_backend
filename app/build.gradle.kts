@@ -1,11 +1,8 @@
+import org.gradle.kotlin.dsl.named
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-	alias(libs.plugins.kotlin.jvm)
-	alias(libs.plugins.kotlin.jpa)
-	alias(libs.plugins.spring.boot)
-	alias(libs.plugins.spring.dependency.management)
-	alias(libs.plugins.kotlin.spring)
+	id("chirp.spring-boot-app")
 }
 
 group = "com.ercoding"
@@ -21,14 +18,13 @@ tasks {
 		}
 	}
 }
-//
-repositories {
-	mavenCentral()
-}
 
 dependencies {
+	implementation(projects.user)
+	implementation(projects.chat)
+	implementation(projects.notification)
+	implementation(projects.common)
 
-	implementation(libs.kotlin.stdlib)
 	implementation(libs.kotlin.reflect)
 	implementation(libs.spring.boot.starter.security)
 

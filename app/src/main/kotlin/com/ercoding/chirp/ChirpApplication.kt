@@ -1,8 +1,6 @@
 package com.ercoding.chirp
 
-import com.ercoding.chirp.user.infra.database.entities.UserEntity
 import com.ercoding.chirp.user.infra.database.repositories.UserRepository
-import jakarta.annotation.PostConstruct
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.stereotype.Component
@@ -18,14 +16,14 @@ fun main(args: Array<String>) {
 class Demo(
     private val repository: UserRepository
 ) {
-    @PostConstruct
-    fun init() {
-        repository.save(
-            UserEntity(
-                email = "test@test.com",
-                username = "test",
-                hashedPassword = "123"
-            )
-        )
-    }
+//    @PostConstruct
+//    fun init() {
+//        repository.save(
+//            UserEntity(
+//                email = "test@test.com",
+//                username = "test",
+//                hashedPassword = "123"
+//            )
+//        )
+//    }
 }

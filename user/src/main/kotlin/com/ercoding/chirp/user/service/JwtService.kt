@@ -1,4 +1,4 @@
-package com.ercoding.chirp.user.service.auth
+package com.ercoding.chirp.user.service
 
 import com.ercoding.chirp.user.domain.exception.InvalidTokenException
 import com.ercoding.chirp.user.domain.model.UserId

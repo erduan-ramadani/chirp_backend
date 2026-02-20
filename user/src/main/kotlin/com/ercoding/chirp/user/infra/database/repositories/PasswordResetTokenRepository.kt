@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import java.time.Instant
 
-interface PasswordResetTokenRepository : JpaRepository<PasswordResetTokenRepository, Long> {
+interface PasswordResetTokenRepository : JpaRepository<PasswordResetTokenEntity, Long> {
     fun findByToken(token: String): PasswordResetTokenEntity?
     fun deleteByExpiresAtLessThan(now: Instant)
 
@@ -20,5 +20,4 @@ interface PasswordResetTokenRepository : JpaRepository<PasswordResetTokenReposit
     """
     )
     fun invalidateActiveTokensForUser(user: UserEntity)
-
 }

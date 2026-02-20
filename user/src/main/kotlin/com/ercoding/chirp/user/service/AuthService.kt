@@ -1,4 +1,4 @@
-package com.ercoding.chirp.user.service.auth
+package com.ercoding.chirp.user.service
 
 import com.ercoding.chirp.user.domain.exception.*
 import com.ercoding.chirp.user.domain.model.AuthenticatedUser
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import java.security.MessageDigest
 import java.time.Instant
+import java.util.*
 
 @Service
 class AuthService(
@@ -95,7 +96,7 @@ class AuthService(
     private fun hashToken(token: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(token.encodeToByteArray())
-        return java.util.Base64.getEncoder().encodeToString(hashBytes)
+        return Base64.getEncoder().encodeToString(hashBytes)
     }
 
     @Transactional

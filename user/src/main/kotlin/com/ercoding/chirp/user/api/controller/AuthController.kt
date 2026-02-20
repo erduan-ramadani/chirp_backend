@@ -3,8 +3,9 @@ package com.ercoding.chirp.user.api.controller
 import com.ercoding.chirp.user.api.dto.*
 import com.ercoding.chirp.user.api.mappers.toAuthenticatedUserDto
 import com.ercoding.chirp.user.api.mappers.toUserDto
-import com.ercoding.chirp.user.service.auth.AuthService
-import com.ercoding.chirp.user.service.auth.EmailVerificationService
+import com.ercoding.chirp.user.service.AuthService
+import com.ercoding.chirp.user.service.EmailVerificationService
+import com.ercoding.chirp.user.service.PasswordResetService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/auth")
 class AuthController(
     private val authService: AuthService,
-    private val emailVerificationService: EmailVerificationService
+    private val emailVerificationService: EmailVerificationService,
+    private val passwordResetService: PasswordResetService
 ) {
 
     @PostMapping("/register")
@@ -57,5 +59,30 @@ class AuthController(
         @RequestParam token: String
     ) {
         emailVerificationService.verifyEmail(token)
+    }
+
+    @PostMapping("/forgot-password")
+    fun forgotPassword(
+        @Valid @RequestBody body: EmailRequest
+    ) {
+        passwordResetService.requestPasswordReset(body.email)
+    }
+
+    @PostMapping("/reset-password")
+    fun resetPassword(
+        @Valid @RequestBody body: ResetPasswordRequest
+    ) {
+        passwordResetService.resetPassword(
+            token = body.token,
+            newPassword = body.newPassword
+        )
+    }
+
+
+    @PostMapping("/change-password")
+    fun changePassword(
+        @Valid @RequestBody body: ChangePasswordRequest
+    ) {
+        //TODO
     }
 }

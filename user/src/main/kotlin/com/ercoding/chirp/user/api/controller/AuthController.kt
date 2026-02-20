@@ -1,9 +1,6 @@
 package com.ercoding.chirp.user.api.controller
 
-import com.ercoding.chirp.user.api.dto.AuthenticatedUserDto
-import com.ercoding.chirp.user.api.dto.LoginRequest
-import com.ercoding.chirp.user.api.dto.RegisterRequest
-import com.ercoding.chirp.user.api.dto.UserDto
+import com.ercoding.chirp.user.api.dto.*
 import com.ercoding.chirp.user.api.mappers.toAuthenticatedUserDto
 import com.ercoding.chirp.user.api.mappers.toUserDto
 import com.ercoding.chirp.user.service.auth.AuthService
@@ -36,5 +33,14 @@ class AuthController(private val authService: AuthService) {
             email = body.email,
             password = body.password
         ).toAuthenticatedUserDto()
+    }
+
+    @PostMapping("/refresh")
+    fun refresh(
+        @RequestBody body: RefreshRequest
+    ): AuthenticatedUserDto {
+        return authService
+            .refresh(body.refreshToken)
+            .toAuthenticatedUserDto()
     }
 }

@@ -1,9 +1,6 @@
 package com.ercoding.chirp.user.service.auth
 
-import com.ercoding.chirp.user.domain.exception.InvalidCredentialsException
-import com.ercoding.chirp.user.domain.exception.InvalidTokenException
-import com.ercoding.chirp.user.domain.exception.UserAlreadyExistsException
-import com.ercoding.chirp.user.domain.exception.UserNotFoundException
+import com.ercoding.chirp.user.domain.exception.*
 import com.ercoding.chirp.user.domain.model.AuthenticatedUser
 import com.ercoding.chirp.user.domain.model.User
 import com.ercoding.chirp.user.domain.model.UserId
@@ -16,6 +13,8 @@ import com.ercoding.chirp.user.infra.database.security.PasswordEncoder
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestParam
 import java.security.MessageDigest
 import java.time.Instant
 
@@ -24,24 +23,29 @@ class AuthService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val emailVerificationService: EmailVerificationService
 ) {
+    @Transactional
     fun register(email: String, username: String, password: String): User {
+        val trimmedEmail = email.trim()
         val user = userRepository.findByEmailOrUsername(
-            email = email.trim(),
+            email = trimmedEmail,
             username = username.trim()
         )
         if (user != null) {
             throw UserAlreadyExistsException()
         }
 
-        val savedUser = userRepository.save(
+        val savedUser = userRepository.saveAndFlush(
             UserEntity(
-                email = email.trim(),
+                email = trimmedEmail,
                 username = username.trim(),
                 hashedPassword = passwordEncoder.encode(password)
             )
         ).toUser()
+
+        val token = emailVerificationService.createVerificationToken(trimmedEmail)
         return savedUser
     }
 
@@ -54,6 +58,10 @@ class AuthService(
 
         if (!passwordEncoder.matches(password, user.hashedPassword)) {
             throw InvalidCredentialsException()
+        }
+
+        if (!user.hasVerifiedEmail) {
+            throw EmailNotVerifiedException()
         }
 
         return user.id?.let { userId ->
@@ -133,5 +141,12 @@ class AuthService(
         val userId = jwtService.getUserIdFromToken(refreshToken)
         val hashed = hashToken(refreshToken)
         refreshTokenRepository.deleteByUserIdAndHashedToken(userId, hashed)
+    }
+
+    @GetMapping("/verify")
+    fun verifyEmail(
+        @RequestParam token: String
+    ) {
+        emailVerificationService.verifyEmail(token)
     }
 }

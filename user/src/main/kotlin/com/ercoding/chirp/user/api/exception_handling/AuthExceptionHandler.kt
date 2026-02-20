@@ -1,9 +1,6 @@
 package com.ercoding.chirp.user.api.exception_handling
 
-import com.ercoding.chirp.user.domain.exception.InvalidCredentialsException
-import com.ercoding.chirp.user.domain.exception.InvalidTokenException
-import com.ercoding.chirp.user.domain.exception.UserAlreadyExistsException
-import com.ercoding.chirp.user.domain.exception.UserNotFoundException
+import com.ercoding.chirp.user.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -39,6 +36,15 @@ class AuthExceptionHandler {
         e: InvalidCredentialsException
     ) = mapOf(
         "code" to "INVALID_CREDENTIALS",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(EmailNotVerifiedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onEmailNotVerified(
+        e: EmailNotVerifiedException
+    ) = mapOf(
+        "code" to "EMAIL_NOT_VERIFIED",
         "message" to e.message
     )
 

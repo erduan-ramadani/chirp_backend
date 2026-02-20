@@ -4,15 +4,16 @@ import com.ercoding.chirp.user.api.dto.*
 import com.ercoding.chirp.user.api.mappers.toAuthenticatedUserDto
 import com.ercoding.chirp.user.api.mappers.toUserDto
 import com.ercoding.chirp.user.service.auth.AuthService
+import com.ercoding.chirp.user.service.auth.EmailVerificationService
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
-class AuthController(private val authService: AuthService) {
+class AuthController(
+    private val authService: AuthService,
+    private val emailVerificationService: EmailVerificationService
+) {
 
     @PostMapping("/register")
     fun register(
@@ -49,5 +50,12 @@ class AuthController(private val authService: AuthService) {
         @RequestBody body: RefreshRequest
     ) {
         return authService.logout(body.refreshToken)
+    }
+
+    @GetMapping("verify")
+    fun verifyEmail(
+        @RequestParam token: String
+    ) {
+        emailVerificationService.verifyEmail(token)
     }
 }

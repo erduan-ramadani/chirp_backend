@@ -1,5 +1,6 @@
 package com.ercoding.chirp.user.infra.database.entities
 
+import com.ercoding.chirp.user.infra.database.security.TokenGenerator
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import java.time.Instant
@@ -14,7 +15,7 @@ class EmailVerificationTokenEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
     @Column(nullable = false, unique = true)
-    var token: String,
+    var token: String = TokenGenerator.generateSecureToken(),
     @Column(nullable = false)
     var expiresAt: Instant,
     @ManyToOne(fetch = FetchType.LAZY)

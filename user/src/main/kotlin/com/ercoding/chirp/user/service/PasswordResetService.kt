@@ -7,6 +7,7 @@ import com.ercoding.chirp.user.domain.exception.UserNotFoundException
 import com.ercoding.chirp.user.domain.model.UserId
 import com.ercoding.chirp.user.infra.database.entities.PasswordResetTokenEntity
 import com.ercoding.chirp.user.infra.database.repositories.PasswordResetTokenRepository
+import com.ercoding.chirp.user.infra.database.repositories.RefreshTokenRepository
 import com.ercoding.chirp.user.infra.database.repositories.UserRepository
 import com.ercoding.chirp.user.infra.security.PasswordEncoder
 import org.springframework.beans.factory.annotation.Value
@@ -19,6 +20,7 @@ import java.time.temporal.ChronoUnit
 @Service
 class PasswordResetService(
     private val userRepository: UserRepository,
+    private val refreshTokenRepository: RefreshTokenRepository,
     private val passwordResetTokenRepository: PasswordResetTokenRepository,
     private val passwordEncoder: PasswordEncoder,
     @param:Value("\${chirp.email.reset-password.expiry-minutes}")
@@ -79,5 +81,14 @@ class PasswordResetService(
         if (oldPassword == newPassword) {
             throw SamePasswordException()
         }
+
+        refreshTokenRepository.deleteByUserId(user.id!!)
+
+        val newHashedPassword = passwordEncoder.encode(newPassword)
+        userRepository.save(
+            user.apply {
+                this.hashedPassword = newHashedPassword
+            }
+        )
     }
 }

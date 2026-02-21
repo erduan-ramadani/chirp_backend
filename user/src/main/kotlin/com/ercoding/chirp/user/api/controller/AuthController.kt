@@ -4,6 +4,7 @@ import com.ercoding.chirp.user.api.config.IpRateLimit
 import com.ercoding.chirp.user.api.dto.*
 import com.ercoding.chirp.user.api.mappers.toAuthenticatedUserDto
 import com.ercoding.chirp.user.api.mappers.toUserDto
+import com.ercoding.chirp.user.api.util.requestUserId
 import com.ercoding.chirp.user.infra.rate_limiting.EmailRateLimiter
 import com.ercoding.chirp.user.service.AuthService
 import com.ercoding.chirp.user.service.EmailVerificationService
@@ -116,6 +117,10 @@ class AuthController(
     fun changePassword(
         @Valid @RequestBody body: ChangePasswordRequest
     ) {
-        //TODO
+        passwordResetService.changePassword(
+            userId = requestUserId,
+            oldPassword = body.oldPassword,
+            newPassword = body.newPassword
+        )
     }
 }

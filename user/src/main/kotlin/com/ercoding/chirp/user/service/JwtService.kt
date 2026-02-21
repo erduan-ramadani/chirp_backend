@@ -1,7 +1,7 @@
 package com.ercoding.chirp.user.service
 
+import com.ercoding.chirp.domain.type.UserId
 import com.ercoding.chirp.user.domain.exception.InvalidTokenException
-import com.ercoding.chirp.user.domain.model.UserId
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys

@@ -1,9 +1,9 @@
 package com.ercoding.chirp.user.service
 
+import com.ercoding.chirp.domain.type.UserId
 import com.ercoding.chirp.user.domain.exception.*
 import com.ercoding.chirp.user.domain.model.AuthenticatedUser
 import com.ercoding.chirp.user.domain.model.User
-import com.ercoding.chirp.user.domain.model.UserId
 import com.ercoding.chirp.user.infra.database.entities.RefreshTokenEntity
 import com.ercoding.chirp.user.infra.database.entities.UserEntity
 import com.ercoding.chirp.user.infra.database.mappers.toUser

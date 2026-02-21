@@ -1,6 +1,6 @@
 package com.ercoding.chirp.user.api.dto
 
-import com.ercoding.chirp.user.domain.model.UserId
+import com.ercoding.chirp.domain.type.UserId
 
 data class UserDto(
     val id: UserId,

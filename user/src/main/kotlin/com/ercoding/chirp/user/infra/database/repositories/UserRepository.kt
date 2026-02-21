@@ -1,6 +1,6 @@
 package com.ercoding.chirp.user.infra.database.repositories
 
-import com.ercoding.chirp.user.domain.model.UserId
+import com.ercoding.chirp.domain.type.UserId
 import com.ercoding.chirp.user.infra.database.entities.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 

@@ -1,10 +1,10 @@
 package com.ercoding.chirp.user.service
 
+import com.ercoding.chirp.domain.type.UserId
 import com.ercoding.chirp.user.domain.exception.InvalidCredentialsException
 import com.ercoding.chirp.user.domain.exception.InvalidTokenException
 import com.ercoding.chirp.user.domain.exception.SamePasswordException
 import com.ercoding.chirp.user.domain.exception.UserNotFoundException
-import com.ercoding.chirp.user.domain.model.UserId
 import com.ercoding.chirp.user.infra.database.entities.PasswordResetTokenEntity
 import com.ercoding.chirp.user.infra.database.repositories.PasswordResetTokenRepository
 import com.ercoding.chirp.user.infra.database.repositories.RefreshTokenRepository

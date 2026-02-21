@@ -1,10 +1,8 @@
 package com.ercoding.chirp.user.domain.model
 
-import java.util.UUID
+import com.ercoding.chirp.domain.type.UserId
 
-typealias UserId = UUID
-
-data class User (
+data class User(
     val id: UserId,
     val username: String,
     val email: String,

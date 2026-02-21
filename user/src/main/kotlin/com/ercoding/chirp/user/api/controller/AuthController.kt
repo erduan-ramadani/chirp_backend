@@ -1,5 +1,6 @@
 package com.ercoding.chirp.user.api.controller
 
+import com.ercoding.chirp.user.api.config.IpRateLimit
 import com.ercoding.chirp.user.api.dto.*
 import com.ercoding.chirp.user.api.mappers.toAuthenticatedUserDto
 import com.ercoding.chirp.user.api.mappers.toUserDto
@@ -9,6 +10,7 @@ import com.ercoding.chirp.user.service.EmailVerificationService
 import com.ercoding.chirp.user.service.PasswordResetService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
+import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping("/api/auth")
@@ -20,6 +22,11 @@ class AuthController(
 ) {
 
     @PostMapping("/register")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun register(
         @Valid @RequestBody body: RegisterRequest
     ): UserDto {
@@ -31,6 +38,11 @@ class AuthController(
     }
 
     @PostMapping("/login")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun login(
         @RequestBody body: LoginRequest
     ): AuthenticatedUserDto {
@@ -57,6 +69,11 @@ class AuthController(
     }
 
     @PostMapping("/resend-verification")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun resendVerification(
         @Valid @RequestBody body: EmailRequest
     ) {
@@ -73,6 +90,11 @@ class AuthController(
     }
 
     @PostMapping("/forgot-password")
+    @IpRateLimit(
+        requests = 10,
+        duration = 1L,
+        unit = TimeUnit.HOURS
+    )
     fun forgotPassword(
         @Valid @RequestBody body: EmailRequest
     ) {

@@ -1,4 +1,4 @@
-package com.ercoding.chirp.user.infra.database.security.rate_limiting
+package com.ercoding.chirp.user.infra.rate_limiting
 
 import com.ercoding.chirp.user.domain.exception.RateLimitException
 import org.springframework.beans.factory.annotation.Value

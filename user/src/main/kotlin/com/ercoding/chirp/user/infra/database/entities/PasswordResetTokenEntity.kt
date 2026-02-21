@@ -1,6 +1,6 @@
 package com.ercoding.chirp.user.infra.database.entities
 
-import com.ercoding.chirp.user.infra.database.security.TokenGenerator
+import com.ercoding.chirp.user.infra.security.TokenGenerator
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import java.time.Instant

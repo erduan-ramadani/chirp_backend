@@ -9,7 +9,7 @@ import com.ercoding.chirp.user.infra.database.entities.UserEntity
 import com.ercoding.chirp.user.infra.database.mappers.toUser
 import com.ercoding.chirp.user.infra.database.repositories.RefreshTokenRepository
 import com.ercoding.chirp.user.infra.database.repositories.UserRepository
-import com.ercoding.chirp.user.infra.database.security.PasswordEncoder
+import com.ercoding.chirp.user.infra.security.PasswordEncoder
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

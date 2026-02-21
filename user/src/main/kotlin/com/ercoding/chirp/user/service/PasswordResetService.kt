@@ -8,7 +8,7 @@ import com.ercoding.chirp.user.domain.model.UserId
 import com.ercoding.chirp.user.infra.database.entities.PasswordResetTokenEntity
 import com.ercoding.chirp.user.infra.database.repositories.PasswordResetTokenRepository
 import com.ercoding.chirp.user.infra.database.repositories.UserRepository
-import com.ercoding.chirp.user.infra.database.security.PasswordEncoder
+import com.ercoding.chirp.user.infra.security.PasswordEncoder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

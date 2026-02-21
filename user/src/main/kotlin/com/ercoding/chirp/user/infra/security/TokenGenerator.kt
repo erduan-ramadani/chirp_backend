@@ -1,6 +1,7 @@
-package com.ercoding.chirp.user.infra.database.security
+package com.ercoding.chirp.user.infra.security
 
 import java.security.SecureRandom
+import java.util.*
 
 object TokenGenerator {
     fun generateSecureToken(): String {
@@ -9,7 +10,7 @@ object TokenGenerator {
         val secureRandom = SecureRandom()
         secureRandom.nextBytes(bytes)
 
-        return java.util.Base64.getUrlEncoder()
+        return Base64.getUrlEncoder()
             .withoutPadding()
             .encodeToString(bytes)
     }

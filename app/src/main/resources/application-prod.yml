@@ -12,6 +12,8 @@ nginx:
   require-proxy: true
 
 chirp:
+  email:
+    url: "https://chirp.er-coding.com"
   rate-limit:
     ip:
       apply-limit: false

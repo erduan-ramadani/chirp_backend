@@ -74,6 +74,7 @@ jwt:
 
 chirp:
   email:
+    from: mail@er-coding.com
     verification:
       expiry-hours: 24
     reset-password:

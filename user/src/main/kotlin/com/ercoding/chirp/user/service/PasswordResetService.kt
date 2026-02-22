@@ -1,6 +1,8 @@
 package com.ercoding.chirp.user.service
 
+import com.ercoding.chirp.domain.events.user.UserEvent
 import com.ercoding.chirp.domain.type.UserId
+import com.ercoding.chirp.infra.message_queue.EventPublisher
 import com.ercoding.chirp.user.domain.exception.InvalidCredentialsException
 import com.ercoding.chirp.user.domain.exception.InvalidTokenException
 import com.ercoding.chirp.user.domain.exception.SamePasswordException
@@ -23,6 +25,7 @@ class PasswordResetService(
     private val refreshTokenRepository: RefreshTokenRepository,
     private val passwordResetTokenRepository: PasswordResetTokenRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val eventPublisher: EventPublisher,
     @param:Value("\${chirp.email.reset-password.expiry-minutes}")
     private val expiryMinutes: Long,
 ) {
@@ -37,6 +40,16 @@ class PasswordResetService(
             expiresAt = Instant.now().plus(expiryMinutes, ChronoUnit.MINUTES)
         )
         passwordResetTokenRepository.save(token)
+
+        eventPublisher.publish(
+            event = UserEvent.RequestResetPassword(
+                userId = user.id!!,
+                email = user.email,
+                username = user.username,
+                passwordResetToken = token.token,
+                expiresInMinutes = expiryMinutes
+            )
+        )
     }
 
     @Transactional

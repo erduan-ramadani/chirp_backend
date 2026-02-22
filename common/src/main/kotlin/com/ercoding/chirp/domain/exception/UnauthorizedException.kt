@@ -1,3 +1,3 @@
-package com.ercoding.chirp.user.domain.exception
+package com.ercoding.chirp.domain.exception
 
 class UnauthorizedException() : RuntimeException("Missing auth details")

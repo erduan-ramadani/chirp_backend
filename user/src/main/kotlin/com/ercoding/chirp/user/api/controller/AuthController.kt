@@ -1,10 +1,10 @@
 package com.ercoding.chirp.user.api.controller
 
+import com.ercoding.chirp.api.util.requestUserId
 import com.ercoding.chirp.user.api.config.IpRateLimit
 import com.ercoding.chirp.user.api.dto.*
 import com.ercoding.chirp.user.api.mappers.toAuthenticatedUserDto
 import com.ercoding.chirp.user.api.mappers.toUserDto
-import com.ercoding.chirp.user.api.util.requestUserId
 import com.ercoding.chirp.user.infra.rate_limiting.EmailRateLimiter
 import com.ercoding.chirp.user.service.AuthService
 import com.ercoding.chirp.user.service.EmailVerificationService

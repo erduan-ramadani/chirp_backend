@@ -1,5 +1,6 @@
 package com.ercoding.chirp.user.api.exception_handling
 
+import com.ercoding.chirp.domain.exception.UnauthorizedException
 import com.ercoding.chirp.user.domain.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

@@ -1,6 +1,7 @@
 plugins {
     id("chirp.spring-boot-service")
     kotlin("plugin.jpa")
+    kotlin("plugin.spring") version "2.1.21"
 }
 
 group = "com.ercoding"
@@ -8,7 +9,10 @@ version = "unspecified"
 
 dependencies {
     implementation(projects.common)
-    
+
+    implementation(libs.spring.boot.starter.data.jpa)
+    runtimeOnly(libs.postgresql)
+
     testImplementation(kotlin("test"))
 }
 

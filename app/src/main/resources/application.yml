@@ -37,6 +37,15 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  mail:
+    port: 587
+    password: ${MAILGUN_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable:
 
   rabbitmq:
     host: kebnekaise.lmq.cloudamqp.com

@@ -7,6 +7,8 @@ group = "com.ercoding"
 version = "unspecified"
 
 dependencies {
+    implementation(projects.common)
+    
     testImplementation(kotlin("test"))
 }
 

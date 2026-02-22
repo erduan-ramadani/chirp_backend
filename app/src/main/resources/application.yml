@@ -40,7 +40,7 @@ spring:
 
   rabbitmq:
     host: kebnekaise.lmq.cloudamqp.com
-    password: { $RABBITMQ_PASSWORD }
+    password: ${RABBITMQ_PASSWORD}
     username: ukvndoqn
     ssl:
       enable: true

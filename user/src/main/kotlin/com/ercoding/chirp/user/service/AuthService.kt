@@ -1,6 +1,8 @@
 package com.ercoding.chirp.user.service
 
+import com.ercoding.chirp.domain.events.user.UserEvent
 import com.ercoding.chirp.domain.type.UserId
+import com.ercoding.chirp.infra.message_queue.EventPublisher
 import com.ercoding.chirp.user.domain.exception.*
 import com.ercoding.chirp.user.domain.model.AuthenticatedUser
 import com.ercoding.chirp.user.domain.model.User
@@ -25,7 +27,8 @@ class AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val emailVerificationService: EmailVerificationService
+    private val emailVerificationService: EmailVerificationService,
+    private val eventPublisher: EventPublisher
 ) {
     @Transactional
     fun register(email: String, username: String, password: String): User {
@@ -47,6 +50,16 @@ class AuthService(
         ).toUser()
 
         val token = emailVerificationService.createVerificationToken(trimmedEmail)
+
+        eventPublisher.publish(
+            event = UserEvent.Created(
+                userId = savedUser.id,
+                email = savedUser.email,
+                username = savedUser.username,
+                verificationToken = token.token
+            )
+        )
+        
         return savedUser
     }
 

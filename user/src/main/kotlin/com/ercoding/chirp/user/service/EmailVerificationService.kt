@@ -1,5 +1,7 @@
 package com.ercoding.chirp.user.service
 
+import com.ercoding.chirp.domain.events.user.UserEvent
+import com.ercoding.chirp.infra.message_queue.EventPublisher
 import com.ercoding.chirp.user.domain.exception.InvalidTokenException
 import com.ercoding.chirp.user.domain.exception.UserNotFoundException
 import com.ercoding.chirp.user.domain.model.EmailVerificationToken
@@ -19,11 +21,26 @@ import java.time.temporal.ChronoUnit
 class EmailVerificationService(
     private val emailVerificationTokenRepository: EmailVerificationTokenRepository,
     private val userRepository: UserRepository,
+    private val eventPublisher: EventPublisher,
     @param:Value("\${chirp.email.verification.expiry-hours}") private val expiryHours: Long
 ) {
 
+    @Transactional
     fun resendVerificationEmail(email: String) {
-        // TODO: trigger resend
+        val token = createVerificationToken(email)
+
+        if (token.user.hasEmailVerified) {
+            return
+        }
+
+        eventPublisher.publish(
+            event = UserEvent.RequestResendVerification(
+                userId = token.user.id,
+                email = token.user.email,
+                username = token.user.username,
+                verificationToken = token.token
+            )
+        )
     }
 
     @Transactional

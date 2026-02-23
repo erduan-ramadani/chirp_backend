@@ -32,7 +32,7 @@ class ChatMessageEntity(
     var chatId: ChatId,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-        name = "chat_ud",
+        name = "chat_id",
         nullable = false,
         insertable = false,
         updatable = false

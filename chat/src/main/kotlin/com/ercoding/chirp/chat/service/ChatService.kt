@@ -2,6 +2,8 @@ package com.ercoding.chirp.chat.service
 
 import com.ercoding.chirp.chat.api.dto.ChatMessageDto
 import com.ercoding.chirp.chat.api.mappers.toChatMessageDto
+import com.ercoding.chirp.chat.domain.event.ChatParticipantLeftEvent
+import com.ercoding.chirp.chat.domain.event.ChatParticipantsJoinedEvent
 import com.ercoding.chirp.chat.domain.exception.ChatNotFoundException
 import com.ercoding.chirp.chat.domain.exception.ChatParticipantNotFoundException
 import com.ercoding.chirp.chat.domain.exception.InvalidChatSizeException
@@ -16,6 +18,7 @@ import com.ercoding.chirp.chat.infra.database.repositories.ChatRepository
 import com.ercoding.chirp.domain.exception.ForbiddenException
 import com.ercoding.chirp.domain.type.ChatId
 import com.ercoding.chirp.domain.type.UserId
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -26,7 +29,8 @@ import java.time.Instant
 class ChatService(
     private val chatRepository: ChatRepository,
     private val chatParticipantRepository: ChatParticipantRepository,
-    private val chatMessageRepository: ChatMessageRepository
+    private val chatMessageRepository: ChatMessageRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
     fun getChatMessages(
@@ -99,6 +103,12 @@ class ChatService(
             }
         ).toChat(lastMessage)
 
+        applicationEventPublisher.publishEvent(
+            ChatParticipantsJoinedEvent(
+                chatId = chatId,
+                userIds = userIds
+            )
+        )
         return updatedChat
     }
 
@@ -122,6 +132,13 @@ class ChatService(
             chat.apply {
                 this.participants = chat.participants - participant
             }
+        )
+
+        applicationEventPublisher.publishEvent(
+            ChatParticipantLeftEvent(
+                chatId = chatId,
+                userId = userId
+            )
         )
     }
 

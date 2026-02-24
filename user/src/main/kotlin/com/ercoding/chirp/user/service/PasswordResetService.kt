@@ -1,10 +1,10 @@
 package com.ercoding.chirp.user.service
 
 import com.ercoding.chirp.domain.events.user.UserEvent
+import com.ercoding.chirp.domain.exception.InvalidTokenException
 import com.ercoding.chirp.domain.type.UserId
 import com.ercoding.chirp.infra.message_queue.EventPublisher
 import com.ercoding.chirp.user.domain.exception.InvalidCredentialsException
-import com.ercoding.chirp.user.domain.exception.InvalidTokenException
 import com.ercoding.chirp.user.domain.exception.SamePasswordException
 import com.ercoding.chirp.user.domain.exception.UserNotFoundException
 import com.ercoding.chirp.user.infra.database.entities.PasswordResetTokenEntity

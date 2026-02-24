@@ -9,7 +9,9 @@ import com.ercoding.chirp.chat.api.mappers.toChatDto
 import com.ercoding.chirp.chat.service.ChatService
 import com.ercoding.chirp.domain.type.ChatId
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 import java.time.Instant
 
 @RestController
@@ -33,6 +35,23 @@ class ChatController(
             before = before,
             pageSize = pageSize
         )
+    }
+
+    @GetMapping("/{chatId}")
+    fun getChat(
+        @PathVariable("chatId") chatId: ChatId
+    ): ChatDto {
+        return chatService.getChatById(
+            chatId = chatId,
+            requestUserId = requestUserId
+        )?.toChatDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
+
+    @GetMapping
+    fun getChatsForUser(): List<ChatDto> {
+        return chatService.findChatsByUser(
+            userId = requestUserId
+        ).map { it.toChatDto() }
     }
 
     @PostMapping

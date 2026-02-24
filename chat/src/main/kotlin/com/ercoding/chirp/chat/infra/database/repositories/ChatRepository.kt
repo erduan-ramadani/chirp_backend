@@ -32,7 +32,7 @@ interface ChatRepository : JpaRepository<ChatEntity, ChatId> {
         WHERE EXISTS (
         SELECT 1
         FROM c.participants p
-        WHERE p.userId = :UserId
+        WHERE p.userId = :userId
         )
     """
     )

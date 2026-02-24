@@ -1,4 +1,4 @@
-package com.ercoding.chirp.user.domain.exception
+package com.ercoding.chirp.domain.exception
 
 class InvalidTokenException(
     override val message: String?

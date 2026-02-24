@@ -1,6 +1,6 @@
 package com.ercoding.chirp.user.api.config
 
-import com.ercoding.chirp.user.service.JwtService
+import com.ercoding.chirp.service.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

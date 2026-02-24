@@ -1,9 +1,14 @@
 package com.ercoding.chirp.user.service
 
 import com.ercoding.chirp.domain.events.user.UserEvent
+import com.ercoding.chirp.domain.exception.InvalidTokenException
 import com.ercoding.chirp.domain.type.UserId
 import com.ercoding.chirp.infra.message_queue.EventPublisher
-import com.ercoding.chirp.user.domain.exception.*
+import com.ercoding.chirp.service.JwtService
+import com.ercoding.chirp.user.domain.exception.EmailNotVerifiedException
+import com.ercoding.chirp.user.domain.exception.InvalidCredentialsException
+import com.ercoding.chirp.user.domain.exception.UserAlreadyExistsException
+import com.ercoding.chirp.user.domain.exception.UserNotFoundException
 import com.ercoding.chirp.user.domain.model.AuthenticatedUser
 import com.ercoding.chirp.user.domain.model.User
 import com.ercoding.chirp.user.infra.database.entities.RefreshTokenEntity
@@ -59,7 +64,7 @@ class AuthService(
                 verificationToken = token.token
             )
         )
-        
+
         return savedUser
     }
 

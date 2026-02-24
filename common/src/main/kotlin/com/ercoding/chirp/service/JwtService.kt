@@ -1,7 +1,7 @@
-package com.ercoding.chirp.user.service
+package com.ercoding.chirp.service
 
+import com.ercoding.chirp.domain.exception.InvalidTokenException
 import com.ercoding.chirp.domain.type.UserId
-import com.ercoding.chirp.user.domain.exception.InvalidTokenException
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -18,7 +18,7 @@ class JwtService(
 ) {
     @OptIn(ExperimentalEncodingApi::class)
     private val secretKey = Keys.hmacShaKeyFor(
-        Base64.decode(secretBase64)
+        Base64.Default.decode(secretBase64)
     )
 
     private val accessTokenValidityMs = expirationMinutes * 60 * 1000L

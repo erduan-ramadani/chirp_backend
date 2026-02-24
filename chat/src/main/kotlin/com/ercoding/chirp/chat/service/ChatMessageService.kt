@@ -16,6 +16,7 @@ import com.ercoding.chirp.domain.type.ChatId
 import com.ercoding.chirp.domain.type.ChatMessageId
 import com.ercoding.chirp.domain.type.UserId
 import com.ercoding.chirp.infra.message_queue.EventPublisher
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -31,6 +32,10 @@ class ChatMessageService(
 ) {
 
     @Transactional
+    @CacheEvict(
+        value = ["messages"],
+        key = "#chatId"
+    )
     fun sendMessage(
         chatId: ChatId,
         senderId: UserId,
@@ -84,5 +89,15 @@ class ChatMessageService(
                 messageId = messageId
             )
         )
+
+        evictMessagesCache(message.chatId)
+    }
+
+    @CacheEvict(
+        value = ["message"],
+        key = "#chatId"
+    )
+    fun evictMessagesCache(chatId: ChatId) {
+        // NO-OP: Let Spring handle the cache evict
     }
 }

@@ -1,8 +1,9 @@
 package com.ercoding.chirp.chat.service
 
+import com.ercoding.chirp.chat.api.dto.ChatMessageDto
+import com.ercoding.chirp.chat.api.mappers.toChatMessageDto
 import com.ercoding.chirp.chat.domain.exception.ChatNotFoundException
 import com.ercoding.chirp.chat.domain.exception.ChatParticipantNotFoundException
-import com.ercoding.chirp.chat.domain.exception.ForbiddenException
 import com.ercoding.chirp.chat.domain.exception.InvalidChatSizeException
 import com.ercoding.chirp.chat.domain.models.Chat
 import com.ercoding.chirp.chat.domain.models.ChatMessage
@@ -12,11 +13,14 @@ import com.ercoding.chirp.chat.infra.database.mappers.toChatMessage
 import com.ercoding.chirp.chat.infra.database.repositories.ChatMessageRepository
 import com.ercoding.chirp.chat.infra.database.repositories.ChatParticipantRepository
 import com.ercoding.chirp.chat.infra.database.repositories.ChatRepository
+import com.ercoding.chirp.domain.exception.ForbiddenException
 import com.ercoding.chirp.domain.type.ChatId
 import com.ercoding.chirp.domain.type.UserId
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 @Service
 class ChatService(
@@ -24,6 +28,23 @@ class ChatService(
     private val chatParticipantRepository: ChatParticipantRepository,
     private val chatMessageRepository: ChatMessageRepository
 ) {
+
+    fun getChatMessages(
+        chatId: ChatId,
+        before: Instant?,
+        pageSize: Int
+    ): List<ChatMessageDto> {
+        return chatMessageRepository
+            .findByChatIdBefore(
+                chatId = chatId,
+                before = before ?: Instant.now(),
+                pageable = PageRequest.of(0, pageSize)
+            )
+            .content
+            .asReversed()
+            .map { it.toChatMessage().toChatMessageDto() }
+    }
+
     @Transactional
     fun createChat(
         creatorId: UserId,

@@ -1,4 +1,4 @@
-package com.ercoding.chirp.chat.domain.exception
+package com.ercoding.chirp.domain.exception
 
 class ForbiddenException : RuntimeException("You are not allowed to do that") {
 }

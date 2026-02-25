@@ -2,12 +2,14 @@ package com.ercoding.chirp.chat.service
 
 import com.ercoding.chirp.chat.domain.event.ProfilePictureUpdatedEvent
 import com.ercoding.chirp.chat.domain.exception.ChatParticipantNotFoundException
+import com.ercoding.chirp.chat.domain.exception.InvalidProfilePictureException
 import com.ercoding.chirp.chat.domain.models.ProfilePictureUploadCredentials
 import com.ercoding.chirp.chat.infra.database.repositories.ChatParticipantRepository
 import com.ercoding.chirp.chat.infra.storage.SupabaseStorageService
 import com.ercoding.chirp.domain.type.UserId
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -16,7 +18,8 @@ import org.springframework.stereotype.Service
 class ProfilePictureService(
     private val supabaseStorageService: SupabaseStorageService,
     private val chatParticipantRepository: ChatParticipantRepository,
-    private val applicationEventPublisher: ApplicationEventPublisher
+    private val applicationEventPublisher: ApplicationEventPublisher,
+    @param:Value("\${supabase.url}") private val supabaseUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(ProfilePictureService::class.java)
 
@@ -54,6 +57,10 @@ class ProfilePictureService(
 
     @Transactional
     fun confirmProfilePictureUpload(userId: UserId, publicUrl: String) {
+        if (!publicUrl.startsWith(supabaseUrl)) {
+            throw InvalidProfilePictureException("Invalid profile picture URL")
+        }
+
         val participant = chatParticipantRepository.findByIdOrNull(userId)
             ?: throw ChatParticipantNotFoundException(userId)
 

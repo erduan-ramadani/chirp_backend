@@ -29,7 +29,7 @@ class SupabaseStorageService(
             ?: throw InvalidProfilePictureException("Invalid mime type $mimeType")
 
         val fileName = "user_${userId}_${UUID.randomUUID()}.$extension"
-        val path = "profile-pictures/$fileName"
+        val path = "profile-picture/$fileName"
 
         val publicUrl = "$supabaseUrl/storage/v1/object/public/$path"
 
@@ -75,6 +75,7 @@ class SupabaseStorageService(
         val response = supabaseRestClient
             .post()
             .uri("/storage/v1/object/upload/sign/$path")
+            .header("Content-Type", "application/json")
             .body(json)
             .retrieve()
             .body(SignedUploadResponse::class.java)
@@ -86,6 +87,4 @@ class SupabaseStorageService(
     private data class SignedUploadResponse(
         val url: String
     )
-
-
 }

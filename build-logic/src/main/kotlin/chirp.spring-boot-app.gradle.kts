@@ -1,12 +1,14 @@
 import gradle.kotlin.dsl.accessors._6c35dc5b101437ffcd4f7834c90ef9dd.allOpen
 import gradle.kotlin.dsl.accessors._6c35dc5b101437ffcd4f7834c90ef9dd.java
-import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 plugins {
     id("chirp.spring-boot-service")
     id("org.springframework.boot")
     kotlin("plugin.spring")
 }
+
+tasks.bootJar { enabled = true }
+tasks.jar { enabled = false }
 
 java {
     toolchain {

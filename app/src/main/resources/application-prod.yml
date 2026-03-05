@@ -13,9 +13,9 @@ nginx:
 
 chirp:
   email:
-    url: "https://chirp.er-coding.com"
+    url: "https://chirp.erduanramadani.de"
   rate-limit:
     ip:
       apply-limit: false
   web-socket:
-    allowed-origin: "https://chirp.er-coding.com"
+    allowed-origin: "https://chirp.erduanramadani.de"

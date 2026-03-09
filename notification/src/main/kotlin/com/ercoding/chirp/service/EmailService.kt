@@ -35,11 +35,21 @@ class EmailService(
             .build()
             .toUriString()
 
+        val devVerificationUrl = UriComponentsBuilder
+            .fromUriString("$baseUrl/api/auth/verify")
+            .scheme("chirp")
+            .queryParam("token", token)
+            .build()
+            .toUriString()
+
+        // Same URL, but users chirp:// scheme which allows easier testing of deep links
+        // without having to verify them Apple/Google
         val htmlContent = templateService.processTemplate(
             templateName = "emails/account-verification",
             variables = mapOf(
                 "username" to username,
                 "verificationUrl" to verificationUrl,
+                "devVerificationUrl" to devVerificationUrl,
             )
         )
 

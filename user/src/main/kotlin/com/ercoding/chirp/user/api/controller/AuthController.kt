@@ -78,9 +78,9 @@ class AuthController(
     fun resendVerification(
         @Valid @RequestBody body: EmailRequest
     ) {
-        emailRateLimiter.withRateLimit(body.email) {
-            emailVerificationService.resendVerificationEmail(body.email)
-        }
+//        emailRateLimiter.withRateLimit(body.email) {
+        emailVerificationService.resendVerificationEmail(body.email)
+//        }
     }
 
     @GetMapping("verify")

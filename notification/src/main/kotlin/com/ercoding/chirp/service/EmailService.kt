@@ -75,11 +75,19 @@ class EmailService(
             .build()
             .toUriString()
 
+        val devUrl = UriComponentsBuilder
+            .fromUriString("$baseUrl/api/auth/reset-password")
+            .scheme("chirp")
+            .queryParam("token", token)
+            .build()
+            .toUriString()
+
         val htmlContent = templateService.processTemplate(
             templateName = "emails/reset-password",
             variables = mapOf(
                 "username" to username,
                 "resetPasswordUrl" to resetPasswordUrl,
+                "devResetPassword" to devUrl,
                 "expiresInMinutes" to expiresIn.toMinutes()
             )
         )
